@@ -43,8 +43,8 @@ public class InstanceRuleManager {
     private static List<ExecutableRule> ruleInstanceList = null;
 
     /**
-     * load the rule, then create the rule instance.
-     * After creating an instance, set the user-defined field's value.
+     * load rule, then create rule instance.
+     * After creating an instance, set user-defined field's value.
      *
      * @param classList   All rule implementation classes
      * @param features
@@ -57,6 +57,8 @@ public class InstanceRuleManager {
             return;
         }
         try {
+            // Initialize dependency whitelist manager
+            DependencyWhitelistManager.init();
             List<ExecutableRule> instanceList = new ArrayList<>();
             List<ConfRules> confRulesList = ConfRuleFacade.load(features, modes, fromVersion, toVersion);
             Map<String, Class> ruleMap = RuleSelector.select(classList);

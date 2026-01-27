@@ -20,10 +20,7 @@ package org.eclipse.emt4j.analysis;
 
 import org.eclipse.emt4j.analysis.common.util.Progress;
 import org.eclipse.emt4j.analysis.source.DependencySource;
-import org.eclipse.emt4j.common.CheckConfig;
-import org.eclipse.emt4j.common.DependType;
-import org.eclipse.emt4j.common.Dependency;
-import org.eclipse.emt4j.common.Feature;
+import org.eclipse.emt4j.common.*;
 import org.eclipse.emt4j.common.rule.ExecutableRule;
 import org.eclipse.emt4j.common.rule.InstanceRuleManager;
 import org.eclipse.emt4j.common.rule.model.ReportCheckResult;
@@ -90,6 +87,28 @@ public class AnalysisExecutor {
         sourceList.parallelStream().forEach(
                 source -> {
                     try {
+                        /*
+                        DependencySourceDto 示例
+                        {
+                            "file": {
+                                "path": "C:\\Users\\Admin\\.m2\\repository\\org\\junit\\jupiter\\junit-jupiter-engine\\5.10.1\\junit-jupiter-engine-5.10.1.jar"
+                            },
+                            "information": {
+                                "identifier": "junit-jupiter-engine",
+                                "isDependency": true,
+                                "extras": ["org.junit.jupiter:junit-jupiter-engine:5.10.1"]
+                            }
+                        }
+                         */
+                        DependencySourceDto dependencySourceDto = new DependencySourceDto(source.getFile(), source.getInformation());
+
+                        // Check if dependency is whitelisted, skip analysis if true
+                        if (org.eclipse.emt4j.common.rule.DependencyWhitelistManager.isWhitelisted(dependencySourceDto)) {
+                            if (checkConfig.isVerbose()) {
+                                syncPrint("  Skip whitelisted dependency: " + extractDependencyInfo(source));
+                            }
+                            return;
+                        }
                         source.parse((d) -> {
                             try {
                                 int hashCode = d.hashCode();
@@ -139,6 +158,17 @@ public class AnalysisExecutor {
         if (checkConfig.isVerbose()) {
             System.out.println(msg);
         }
+    }
+
+    /**
+     * Extract dependency information for logging purposes
+     */
+    private String extractDependencyInfo(DependencySource dependencySource) {
+        if (dependencySource.getInformation() != null && dependencySource.getInformation().getExtras() != null &&
+                dependencySource.getInformation().getExtras().length > 0) {
+            return dependencySource.getInformation().getExtras()[0];
+        }
+        return dependencySource.getFile().getPath();
     }
 
     private static String[] RULE_CLASS = new String[]{
