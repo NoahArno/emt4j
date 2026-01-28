@@ -177,6 +177,7 @@ public class AnalysisExecutor {
             "org.eclipse.emt4j.common.rule.impl.JvmOptionRule",
             "org.eclipse.emt4j.common.rule.impl.JavaxPackageUsageRule",
             "org.eclipse.emt4j.common.rule.impl.ReferenceClassRule",
+            "org.eclipse.emt4j.common.rule.impl.SpringFactoriesEnableAutoConfigurationRule",
             "org.eclipse.emt4j.common.rule.impl.TouchedMethodRule",
             "org.eclipse.emt4j.common.rule.impl.NameBasedTouchedMethodRule",
             "org.eclipse.emt4j.common.rule.impl.WholeClassRule",

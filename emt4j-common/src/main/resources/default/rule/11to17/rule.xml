@@ -109,4 +109,12 @@
             <mode>class</mode>
         </support-modes>
     </rule>
+
+    <rule desc="spring.factories contains EnableAutoConfiguration (Spring Boot 3 migration)" type="spring-factories-enable-autoconfiguration"
+          result-code="SPRING_FACTORIES_ENABLE_AUTOCONFIGURATION" priority="p1">
+        <support-modes>
+            <mode>agent</mode>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
 </rules>

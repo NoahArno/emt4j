@@ -102,6 +102,7 @@ public class MainAgent {
             "org.eclipse.emt4j.common.rule.impl.JvmOptionRule",
             "org.eclipse.emt4j.common.rule.impl.JavaxPackageUsageRule",
             "org.eclipse.emt4j.common.rule.impl.ReferenceClassRule",
+            "org.eclipse.emt4j.common.rule.impl.SpringFactoriesEnableAutoConfigurationRule",
             "org.eclipse.emt4j.common.rule.impl.TouchedMethodRule",
             "org.eclipse.emt4j.agent.common.rule.AddOpensRule",
             "org.eclipse.emt4j.agent.common.rule.AgentReferenceClassRule",
