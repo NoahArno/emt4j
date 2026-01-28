@@ -35,6 +35,13 @@ If you want to use these two features, you need to manually install EMT4J to you
 
 ### Maven Plugin
 
+#### 0.10-noah-SNAPSHOT
+
+基于 emt4j 0.9-SNAPSHOT 版本进行扩展，版本号为 0.10-noah-SNAPSHOT
+
+- 新增依赖白名单功能，位于白名单的依赖跳过检测
+- 新增 javax 依赖引用规则扫描
+
 #### Find compatibility problems existing in a Maven project
 
 Add the following configuration to pom.xml (root pom.xml if a multi-module project): 
