@@ -99,6 +99,7 @@ public class MainAgent {
             "org.eclipse.emt4j.common.rule.impl.AddExportsRule",
             "org.eclipse.emt4j.common.rule.impl.IncompatibleJarRule",
             "org.eclipse.emt4j.common.rule.impl.JvmOptionRule",
+            "org.eclipse.emt4j.common.rule.impl.JavaxPackageUsageRule",
             "org.eclipse.emt4j.common.rule.impl.ReferenceClassRule",
             "org.eclipse.emt4j.common.rule.impl.TouchedMethodRule",
             "org.eclipse.emt4j.agent.common.rule.AddOpensRule",
