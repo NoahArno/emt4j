@@ -109,6 +109,19 @@
       box-sizing: border-box
     }
 
+    .code-tag {
+      display: inline-block;
+      background-color: #f4f4f5;
+      border: 1px solid #e9e9eb;
+      border-radius: 4px;
+      color: #606266;
+      padding: 0 10px;
+      font-size: 12px;
+      line-height: 26px;
+      height: 28px;
+      box-sizing: border-box
+    }
+
     ul {
       padding-left: 2em;
       margin-top: 0;
@@ -179,7 +192,7 @@
           ${subdata.dependencyTree}
         #end
         #foreach( $detail in $subdata.resultDetailList)
-          <h2><a name="${detail.anchorId}">${detail.detailId}. ${detail.title}</a></h2>
+          <h2><a name="${detail.anchorId}">${detail.detailId}. ${detail.title}</a> <span class="code-tag">${detail.mainResultCode}</span></h2>
           <div style="padding: 0 16px; position: relative;">
             <div
               style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px; border-radius: 6px; background: #cfd1d0">

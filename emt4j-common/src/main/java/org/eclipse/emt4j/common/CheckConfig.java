@@ -35,6 +35,10 @@ public class CheckConfig {
      */
     private String priority;
 
+    private String enableRules;
+
+    private String disableRules;
+
     public int getToVersion() {
         return toVersion;
     }
@@ -64,6 +68,9 @@ public class CheckConfig {
         this.fromVersion = from.fromVersion;
         this.toVersion = from.toVersion;
         this.checkMode = from.checkMode;
+        this.priority = from.priority;
+        this.enableRules = from.enableRules;
+        this.disableRules = from.disableRules;
     }
 
     public boolean isVerbose() {
@@ -80,5 +87,21 @@ public class CheckConfig {
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public String getEnableRules() {
+        return enableRules;
+    }
+
+    public void setEnableRules(String enableRules) {
+        this.enableRules = enableRules;
+    }
+
+    public String getDisableRules() {
+        return disableRules;
+    }
+
+    public void setDisableRules(String disableRules) {
+        this.disableRules = disableRules;
     }
 }

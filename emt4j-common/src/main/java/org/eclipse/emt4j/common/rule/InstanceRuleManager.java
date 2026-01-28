@@ -53,6 +53,11 @@ public class InstanceRuleManager {
      * @param toVersion
      */
     public synchronized static void init(String[] classList, Feature[] features, String[] modes, int fromVersion, int toVersion, String priority) {
+        init(classList, features, modes, fromVersion, toVersion, priority, null, null);
+    }
+
+    public synchronized static void init(String[] classList, Feature[] features, String[] modes, int fromVersion, int toVersion, String priority,
+                                         String enableRules, String disableRules) {
         if (hasInit) {
             return;
         }
@@ -64,10 +69,14 @@ public class InstanceRuleManager {
             Map<String, Class> ruleMap = RuleSelector.select(classList);
             int priorityLimit = toIntPriority(priority);
             ExecutableRule.dependencyPriorityLimit = toIntPriority(System.getProperty("dependencyCheckPriority"));
+            RuleResultCodeFilter resultCodeFilter = new RuleResultCodeFilter(enableRules, disableRules);
 
             for (ConfRules confRules : confRulesList) {
                 for (ConfRuleItem ruleItem : confRules.getRuleItems()) {
                     if (ruleItem.getPriority() > priorityLimit) {
+                        continue;
+                    }
+                    if (!resultCodeFilter.accept(ruleItem.getResultCode())) {
                         continue;
                     }
                     Class c = ruleMap.get(ruleItem.getType());

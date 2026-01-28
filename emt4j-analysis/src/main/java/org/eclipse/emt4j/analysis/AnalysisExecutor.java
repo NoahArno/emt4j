@@ -79,7 +79,8 @@ public class AnalysisExecutor {
         ClassURL.registerUrlProtocolHandler();
         InstanceRuleManager.init(RULE_CLASS, new ArrayList<>(featureList).toArray(new Feature[featureList.size()]),
                 new String[]{"class", "source"},
-                checkConfig.getFromVersion(), checkConfig.getToVersion(), checkConfig.getPriority());
+                checkConfig.getFromVersion(), checkConfig.getToVersion(), checkConfig.getPriority(),
+                checkConfig.getEnableRules(), checkConfig.getDisableRules());
         analysisOutputConsumer.onBegin(checkConfig, featureList);
 
         Set<Integer> alreadyChecked = new ConcurrentSkipListSet<>();

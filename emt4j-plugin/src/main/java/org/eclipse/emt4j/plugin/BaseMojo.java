@@ -72,6 +72,12 @@ abstract class BaseMojo extends AbstractMojo {
     @Parameter(property = "verbose", defaultValue = "false")
     protected boolean verbose;
 
+    @Parameter(property = "enableRules")
+    protected String enableRules;
+
+    @Parameter(property = "disableRules")
+    protected String disableRules;
+
     @Override
     public final void execute() throws MojoExecutionException, MojoFailureException {
         if (fromVersion >= toVersion) {

@@ -20,7 +20,7 @@
 #foreach( $feature in $data )
 $feature.featureId $feature.featureDesc
 #foreach( $detail in $feature.resultDetailList)
-  ${feature.featureId}.${detail.detailId} ${detail.title}
+  ${feature.featureId}.${detail.detailId} ${detail.title} [${detail.mainResultCode}]
     ${feature.featureId}.${detail.detailId}.1 ${detail.descriptionTitle}
       ${detail.description}
     ${feature.featureId}.${detail.detailId}.2 ${detail.solutionTitle}

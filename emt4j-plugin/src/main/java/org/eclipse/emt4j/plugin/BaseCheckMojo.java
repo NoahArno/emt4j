@@ -203,6 +203,12 @@ abstract class BaseCheckMojo extends BaseMojo {
         if (priority != null) {
             param(args, "-priority", priority);
         }
+        if (enableRules != null) {
+            param(args, "-enable-rules", enableRules);
+        }
+        if (disableRules != null) {
+            param(args, "-disable-rules", disableRules);
+        }
         args.addAll(getCheckTargets());
         return args.toArray(new String[0]);
     }

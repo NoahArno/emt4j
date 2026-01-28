@@ -65,7 +65,7 @@ public class DependencyWhitelistManager {
             init();
         }
 
-        if (!dependency.getInformation().isDependency()) {
+        if (dependency == null || dependency.getInformation() == null || !dependency.getInformation().isDependency()) {
             return false; // Only check actual dependencies
         }
 

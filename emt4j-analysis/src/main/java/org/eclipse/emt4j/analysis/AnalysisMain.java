@@ -73,6 +73,8 @@ public class AnalysisMain {
         optionProcessor.addOption(Option.buildParamWithValueOption("-f", StringUtils::isNumeric, (v) -> checkConfig.setFromVersion(Integer.parseInt(v))));
         optionProcessor.addOption(Option.buildParamWithValueOption("-t", StringUtils::isNumeric, (v) -> checkConfig.setToVersion(Integer.parseInt(v))));
         optionProcessor.addOption(Option.buildParamWithValueOption("-priority", null, checkConfig::setPriority));
+        optionProcessor.addOption(Option.buildParamWithValueOption("-enable-rules", null, checkConfig::setEnableRules));
+        optionProcessor.addOption(Option.buildParamWithValueOption("-disable-rules", null, checkConfig::setDisableRules));
         optionProcessor.addOption(Option.buildParamWithValueOption("-p",
                 (v) -> "txt".equalsIgnoreCase(v) || "json".equalsIgnoreCase(v) || "html".equalsIgnoreCase(v), (v) -> reportConfig.setOutputFormat(v.toLowerCase())));
         optionProcessor.addOption(Option.buildParamWithValueOption("-j", (v) -> new File(v).exists()
@@ -102,6 +104,17 @@ public class AnalysisMain {
         }
 
         optionProcessor.process();
+
+        if ((checkConfig.getEnableRules() != null && !checkConfig.getEnableRules().trim().isEmpty()) ||
+                (checkConfig.getDisableRules() != null && !checkConfig.getDisableRules().trim().isEmpty())) {
+            System.out.println("Rule filter:");
+            if (checkConfig.getEnableRules() != null && !checkConfig.getEnableRules().trim().isEmpty()) {
+                System.out.println("  enable-rules=" + checkConfig.getEnableRules());
+            }
+            if (checkConfig.getDisableRules() != null && !checkConfig.getDisableRules().trim().isEmpty()) {
+                System.out.println("  disable-rules=" + checkConfig.getDisableRules());
+            }
+        }
 
         if (analysisExecutor.hasSource()) {
             File tempFile = File.createTempFile(DEFAULT_FILE, ".dat");
@@ -227,9 +240,12 @@ public class AnalysisMain {
         String osName = System.getProperty("os.name");
         boolean windows = osName != null && osName.toLowerCase().contains("windows");
         String launcher = windows ? "analysis.bat" : "analysis.sh";
-        System.err.println("Usage:" + launcher + " [-f version] [-t version] [-p txt] [-o outputfile] [-j target jdk home] [-e external tool home] [-v] [-features features] <files>");
+        System.err.println("Usage:" + launcher + " [-f version] [-t version] [-priority p1|p2|p3] [-enable-rules code1,code2] [-disable-rules code1,code2] [-p txt] [-o outputfile] [-j target jdk home] [-e external tool home] [-v] [-features features] <files>");
         System.err.println("-f From which JDK version,default is 8");
         System.err.println("-t To which JDK version,default is 11");
+        System.err.println("-priority Only enable rules with priority <= this value. e.g. p1");
+        System.err.println("-enable-rules Only enable the given result-codes (comma-separated).");
+        System.err.println("-disable-rules Disable the given result-codes (comma-separated).");
         System.err.println("-p The report format.Can be TXT or JSON or HTML.Default is HTML");
         System.err.println("-o Write analysis to output file. Default is " + DEFAULT_FILE);
         System.err.println("-j Target JDK home. Provide target jdk home can help to find more compatible problems.");
