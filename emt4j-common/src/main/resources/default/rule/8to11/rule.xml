@@ -61,7 +61,7 @@
     <rule desc="JPMS require add-exports" type="add-exports" packages-file="jdk11packages.cfg"
           module-to-package-file="jdk11moduleexport.cfg"
           default-exports-file="jdk_default_export_to_unnamed.cfg" result-code="MODULE_ADD_EXPORTS"
-          priority="p2">
+          priority="p3">
         <support-modes>
             <mode>agent</mode>
             <mode>class</mode>
