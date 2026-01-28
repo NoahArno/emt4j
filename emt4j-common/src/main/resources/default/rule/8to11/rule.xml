@@ -210,9 +210,16 @@
     </rule>
 
     <rule desc="ContextClassLoader of common FJP is AppClassloader" type="name-based-touched-method" method-list-file="fjp_context.cfg" result-code="FJP_CONTEXT"
-          priority="p2">
+          priority="p3">
         <support-modes>
             <!--agent mode is not supported now-->
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="CompletableFuture/ForkJoinPool uses implicit common pool" type="touched-method" method-list-file="fjp_context_implicit.cfg"
+          result-code="FJP_CONTEXT_IMPLICIT" priority="p1">
+        <support-modes>
             <mode>class</mode>
         </support-modes>
     </rule>
