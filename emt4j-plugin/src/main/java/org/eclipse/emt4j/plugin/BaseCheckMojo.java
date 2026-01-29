@@ -209,6 +209,9 @@ abstract class BaseCheckMojo extends BaseMojo {
         if (disableRules != null) {
             param(args, "-disable-rules", disableRules);
         }
+        if (scenario != null) {
+            param(args, "-scenario", scenario);
+        }
         args.addAll(getCheckTargets());
         return args.toArray(new String[0]);
     }

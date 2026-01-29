@@ -26,6 +26,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.eclipse.emt4j.common.Feature;
 import org.eclipse.emt4j.common.JdkMigrationException;
 
 /**
@@ -77,6 +78,14 @@ abstract class BaseMojo extends AbstractMojo {
 
     @Parameter(property = "disableRules")
     protected String disableRules;
+
+    /**
+     * Indicate the upgrade scenario. "default" or "jdk-only" are supported.
+     * - default: Upgrade both JDK and frameworks (Spring, Tomcat, etc.)
+     * - jdk-only: Upgrade JDK only without upgrading frameworks
+     */
+    @Parameter(property = "scenario", defaultValue = "default")
+    protected String scenario;
 
     @Override
     public final void execute() throws MojoExecutionException, MojoFailureException {

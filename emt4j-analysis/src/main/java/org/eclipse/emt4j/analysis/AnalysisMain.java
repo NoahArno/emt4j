@@ -75,6 +75,12 @@ public class AnalysisMain {
         optionProcessor.addOption(Option.buildParamWithValueOption("-priority", null, checkConfig::setPriority));
         optionProcessor.addOption(Option.buildParamWithValueOption("-enable-rules", null, checkConfig::setEnableRules));
         optionProcessor.addOption(Option.buildParamWithValueOption("-disable-rules", null, checkConfig::setDisableRules));
+        optionProcessor.addOption(Option.buildParamWithValueOption("-scenario",
+                (s) -> "default".equalsIgnoreCase(s) || "jdk-only".equalsIgnoreCase(s),
+                (s) -> {
+                    featureList.clear();
+                    featureList.add(Feature.getFeatureByCommandLineText(s.toLowerCase()));
+                }));
         optionProcessor.addOption(Option.buildParamWithValueOption("-p",
                 (v) -> "txt".equalsIgnoreCase(v) || "json".equalsIgnoreCase(v) || "html".equalsIgnoreCase(v), (v) -> reportConfig.setOutputFormat(v.toLowerCase())));
         optionProcessor.addOption(Option.buildParamWithValueOption("-j", (v) -> new File(v).exists()

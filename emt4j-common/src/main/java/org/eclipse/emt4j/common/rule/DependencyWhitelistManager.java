@@ -19,6 +19,7 @@
 package org.eclipse.emt4j.common.rule;
 
 import org.eclipse.emt4j.common.DependencySourceDto;
+import org.eclipse.emt4j.common.Feature;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,24 +35,36 @@ import java.util.concurrent.ConcurrentHashMap;
  * White list manager for dependency checking.
  * Dependencies in whitelist will skip all rule analysis.
  * If current version is greater than whitelist version, it's also considered whitelisted.
+ * Supports scenario-based whitelist configuration.
  */
 public class DependencyWhitelistManager {
     private static volatile boolean initialized = false;
     private static Map<String, String> whitelistCache = new ConcurrentHashMap<>();
+    private static Feature currentFeature = Feature.DEFAULT;
 
-    // Configuration file path
-    private static final String WHITELIST_CONFIG_PATH = "emt4j-whitelist.properties";
+    // Configuration file path template
+    private static final String WHITELIST_CONFIG_PATH_TEMPLATE = "emt4j-whitelist-%s.properties";
 
     /**
-     * Initialize whitelist from configuration file
+     * Initialize whitelist from configuration file based on feature
+     *
+     * @param feature the feature/scenario to use (DEFAULT or JDK_ONLY)
      */
-    public static synchronized void init() {
-        if (initialized) {
+    public static synchronized void init(Feature feature) {
+        if (initialized && currentFeature == feature) {
             return;
         }
 
-        loadWhitelist();
+        currentFeature = feature;
+        loadWhitelist(feature);
         initialized = true;
+    }
+
+    /**
+     * Initialize whitelist with default feature
+     */
+    public static synchronized void init() {
+        init(Feature.DEFAULT);
     }
 
     /**
@@ -129,20 +142,25 @@ public class DependencyWhitelistManager {
     }
 
     /**
-     * Load whitelist from configuration file
+     * Load whitelist from configuration file based on feature
+     *
+     * @param feature the feature/scenario to use
      */
-    private static void loadWhitelist() {
+    private static void loadWhitelist(Feature feature) {
         whitelistCache.clear();
 
+        String configPath = String.format(WHITELIST_CONFIG_PATH_TEMPLATE, feature.getId());
+
         // Try to load from classpath first
-        InputStream is = DependencyWhitelistManager.class.getClassLoader().getResourceAsStream(WHITELIST_CONFIG_PATH);
+        InputStream is = DependencyWhitelistManager.class.getClassLoader().getResourceAsStream(configPath);
         if (is == null) {
             // Try to load from file system
             try {
-                URL configFile = new URL("file:" + WHITELIST_CONFIG_PATH);
+                URL configFile = new URL("file:" + configPath);
                 is = configFile.openStream();
             } catch (Exception e) {
                 // No config file found, use empty whitelist
+                System.err.println("Whitelist config not found for feature: " + feature.getId() + ", using empty whitelist");
                 return;
             }
         }
@@ -214,10 +232,19 @@ public class DependencyWhitelistManager {
 
     /**
      * Reload whitelist (for testing or dynamic updates)
+     *
+     * @param feature the feature/scenario to use
+     */
+    public static synchronized void reload(Feature feature) {
+        initialized = false;
+        init(feature);
+    }
+
+    /**
+     * Reload whitelist with current feature
      */
     public static synchronized void reload() {
-        initialized = false;
-        init();
+        reload(currentFeature);
     }
 
     /**

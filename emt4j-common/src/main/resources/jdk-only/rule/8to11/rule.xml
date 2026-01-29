@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
+
+    See the NOTICE file(s) distributed with this work for additional
+    information regarding copyright ownership.
+
+    This program and the accompanying materials are made available under the
+    terms of the Apache License, Version 2.0 which is available at
+    https://www.apache.org/licenses/LICENSE-2.0.
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+    SPDX-License-Identifier: Apache-2.0
+ -->
+<rules xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="https://projects.eclipse.org/projects/adoptium.emt4j">
+
+    <rule desc="JDK internal API" type="reference-class" match-type="by-package" class-package-file="jdk_internals.cfg"
+          result-code="JDK_INTERNAL"
+          must-contain-in-bytecode="true" sub-result-code="@{subResultCode}" priority="p3">
+        <support-modes>
+            <mode>agent</mode>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="javax.* API usage (Java EE / Jakarta)" type="javax-package-usage" package-list-file="javax_packages.cfg"
+          result-code="JAVAX_PACKAGE_USAGE" priority="p2">
+        <support-modes>
+            <mode>agent</mode>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="System classloader not instance of URLClassLoader " type="system-classloader-not-a-urlclassloader"
+          result-code="SYSTEM_CLASSLOADER_TO_URLCLASSLOADER" priority="p1">
+        <support-modes>
+            <mode>agent</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="Arrays.asList().toArray return type changed" type="arrays-as-list-to-array"
+          result-code="ARRAYS_AS_LIST_TO_ARRAY" priority="p1">
+        <support-modes>
+            <mode>agent</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="Get java version" type="get-java-version" result-code="GET_JDK_VERSION"
+          priority="p2">
+        <support-modes>
+            <mode>agent</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="JPMS require add-exports" type="add-exports" packages-file="jdk11packages.cfg"
+          module-to-package-file="jdk11moduleexport.cfg"
+          default-exports-file="jdk_default_export_to_unnamed.cfg" result-code="MODULE_ADD_EXPORTS"
+          priority="p3">
+        <support-modes>
+            <mode>agent</mode>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="JPMS require add-opens" type="add-opens" packages-file="jdk11packages.cfg"
+          module-to-package-file="jdk11moduleexport.cfg" result-code="MODULE_ADD_OPENS"
+          priority="p2">
+        <support-modes>
+            <mode>agent</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="DateFormat incompatible when default locale data to CLDR"
+          type="cldr-date-format" result-code="CLDR_CLDR_DATE_FORMAT" priority="p2">
+        <support-modes>
+            <mode>agent</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="NumberFormat incompatible when default locale data to CLDR"
+          type="cldr-number-format" result-code="CLDR_CLDR_NUMBER_FORMAT" priority="p2">
+        <support-modes>
+            <mode>agent</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="Calendar#getFirstDayOfWeek incompatible when default locale data to CLDR"
+          type="cldr-calendar-getfirstdayofweek" result-code="CLDR_CLDR_FIRSTDAY_OF_WEEK" priority="p2">
+        <support-modes>
+            <mode>agent</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="java.util.regex.Pattern.compile add flags check in jdk11,but none in jdk8"
+          type="pattern-compile" result-code="JUR_PATTERN_COMPILE" priority="p1">
+        <support-modes>
+            <mode>agent</mode>
+        </support-modes>
+    </rule>
+
+
+    <rule desc="JVM Option not compatible" type="jvm-option" jvm-option-file="jvmoptions.cfg"
+          result-code="VM_OPTION" priority="p1">
+        <support-modes>
+            <mode>agent</mode>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="Remove CORBA from JDK" type="reference-class" match-type="by-package" class-package-file="corba.cfg"
+          result-code="REMOVED_CORBA" must-contain-in-bytecode="true" priority="p1">
+        <support-modes>
+            <mode>agent</mode>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="Removed API" type="touched-method" method-list-file="remove_methods.cfg" result-code="REMOVED_API"
+          priority="p1">
+        <support-modes>
+            <mode>agent</mode>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="Incompatible Jar" type="incompatible-jar" jar-rule-file="incompatible_jar.cfg"
+          result-code="INCOMPATIBLE_JAR" sub-result-code="@{artifact}" priority="p2">
+        <support-modes>
+            <mode>agent</mode>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="Deprecated API" type="deprecated-api" class-list-file="deprecated_api_jdk11.cfg"
+          result-code="DEPRECATED_API" priority="p3">
+        <support-modes>
+            <mode>class</mode>
+            <mode>agent</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="Get java version for classfile " type="whole-class" mvel2-rule-file="mvel2-rule-getjavaversion.cfg"
+          result-code="GET_JDK_VERSION" priority="p2">
+        <support-modes>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="Arrays.asList().toArray return type changed" type="whole-class"
+          mvel2-rule-file="mvel2-rule-castarraysaslisttoarray.cfg" static-analysis-rule="cast-arrays-as-list-to-array"
+          result-code="ARRAYS_AS_LIST_TO_ARRAY" priority="p1">
+        <support-modes>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="java.util.regex.Pattern.compile add flags check in jdk11,but none in jdk8"
+          type="whole-class" mvel2-rule-file="mvel2-rule-patterncompile.cfg" static-analysis-rule="pattern-compile"
+          result-code="JUR_PATTERN_COMPILE" priority="p1">
+        <support-modes>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="System classloader not instance of URLClassLoader " type="whole-class"
+          mvel2-rule-file="mvel2-rule-castsystemclassloadertourlclassloader.cfg" static-analysis-rule="cast-system-classloader-to-url-classloader"
+          result-code="SYSTEM_CLASSLOADER_TO_URLCLASSLOADER" priority="p1">
+        <support-modes>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="DateFormat incompatible when default locale data to CLDR" type="whole-class"
+          mvel2-rule-file="mvel2-rule-cldrdateformat.cfg" static-analysis-rule="cldr-date-format"
+          result-code="CLDR_CLDR_DATE_FORMAT" priority="p2">
+        <support-modes>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="Calendar#getFirstDayOfWeek incompatible when default locale data to CLDR" type="whole-class"
+          mvel2-rule-file="mvel2-rule-cldrcalendarfirstdayofweek.cfg" static-analysis-rule="cldr-calendar-getfirstdayofweek"
+          result-code="CLDR_CLDR_FIRSTDAY_OF_WEEK" priority="p2">
+        <support-modes>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="NumberFormat incompatible when default locale data to CLDR" type="whole-class"
+          mvel2-rule-file="mvel2-rule-cldrnumberformat.cfg" static-analysis-rule="cldr-number-format"
+          result-code="CLDR_CLDR_NUMBER_FORMAT" priority="p2">
+        <support-modes>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="Classes are removed" type="reference-class" match-type="by-class"
+          class-package-file="remove_classes.cfg" must-contain-in-bytecode="true"
+          result-code="REMOVE_CLASS" priority="p1">
+        <support-modes>
+            <mode>agent</mode>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="ContextClassLoader of common FJP is AppClassloader" type="name-based-touched-method" method-list-file="fjp_context.cfg" result-code="FJP_CONTEXT"
+          priority="p3">
+        <support-modes>
+            <!--agent mode is not supported now-->
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+    <rule desc="CompletableFuture/ForkJoinPool uses implicit common pool" type="touched-method" method-list-file="fjp_context_implicit.cfg"
+          result-code="FJP_CONTEXT_IMPLICIT" priority="p1">
+        <support-modes>
+            <mode>class</mode>
+        </support-modes>
+    </rule>
+
+</rules>

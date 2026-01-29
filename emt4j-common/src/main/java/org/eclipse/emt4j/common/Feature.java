@@ -20,7 +20,9 @@ package org.eclipse.emt4j.common;
 
 /**
  * Feature tries to describe different aspects of JDK incompatible problems.
- * Now only support a default, it means generic.
+ * Now support two scenarios:
+ * - DEFAULT: Generic scenario, suitable for upgrading both JDK and frameworks (Spring, Tomcat, etc.)
+ * - JDK_ONLY: Scenario for upgrading JDK only without upgrading frameworks
  * Other possible features like architecture-specific, like AArch64.
  * Each feature contains a collection of resources named with the feature name located at the root of resources of the emt4j-common module.
  * The layout is like this:
@@ -37,7 +39,8 @@ package org.eclipse.emt4j.common;
  * </pre>
  */
 public enum Feature {
-    DEFAULT("default");
+    DEFAULT("default"),
+    JDK_ONLY("jdk-only");
     private String id;
 
     Feature(String id) {
@@ -65,6 +68,8 @@ public enum Feature {
         switch (this) {
             case DEFAULT:
                 return "/default/rule/" + fromVersion + "to" + toVersion;
+            case JDK_ONLY:
+                return "/jdk-only/rule/" + fromVersion + "to" + toVersion;
         }
         throw new RuntimeException("should not reach here");
     }

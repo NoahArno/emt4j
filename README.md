@@ -49,6 +49,7 @@ If you want to use these two features, you need to manually install EMT4J to you
 - 修复 java.corba 模块被移除后，模块内相关依赖无法被扫描出来的问题
 - 补充 REMOVED_NASHORN 规则，让其能通过静态分析扫描出一些 java.nashorn API
 - 将 INCOMPATIBLE_JAR 的优先级调整为 p2
+- 支持 仅JDK升级 和 JDK+Spring 升级两种方式，其中仅 JDK 升级中，设置的规则要宽松一些
 
 #### Find compatibility problems existing in a Maven project
 
@@ -97,6 +98,11 @@ $ mvn process-test-classes org.eclipse.emt4j:emt4j-maven-plugin:0.8.0:process
 ``` shell
 # specify outputFile and priority by -D
 $ mvn process-test-classes org.eclipse.emt4j:emt4j-maven-plugin:0.8.0:process -DoutputFile=emt4j-report.html -Dpriority=p1
+```
+
+``` shell
+# use jdk-only scenario for upgrading JDK without upgrading frameworks
+$ mvn process-test-classes org.eclipse.emt4j:emt4j-maven-plugin:0.8.0:process -Dscenario=jdk-only
 ```
 
 #### Autofix
@@ -152,6 +158,10 @@ Configurations:
 - `fixedReportFileName`: the destination of the HTML report file for issues that are already fixed. The default is emt4j-autofix-fixed.html.
 
 - `dependencyCheckPriority`: the minimum priority of the dependency check rules. p1, p2 and p3 are supported. The default is p1.
+
+- `scenario`: the upgrade scenario. "default" or "jdk-only" are supported. The default is "default".
+  - `default`: Upgrade both JDK and frameworks (Spring, Tomcat, etc.). This scenario uses stricter version requirements for framework dependencies.
+  - `jdk-only`: Upgrade JDK only without upgrading frameworks. This scenario allows using older framework versions (e.g., Spring 4.x with JDK 11) and uses more relaxed compatibility rules.
 
 As mentioned earlier, EMT4J supports running as a Java agent. To leverage it in the test process you need to add the
 following configuration:

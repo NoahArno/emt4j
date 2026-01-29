@@ -62,8 +62,10 @@ public class InstanceRuleManager {
             return;
         }
         try {
-            // Initialize dependency whitelist manager
-            DependencyWhitelistManager.init();
+            // Initialize dependency whitelist manager with the first feature
+            // (assuming all features in the array should use the same whitelist scenario)
+            Feature whitelistFeature = (features != null && features.length > 0) ? features[0] : Feature.DEFAULT;
+            DependencyWhitelistManager.init(whitelistFeature);
             List<ExecutableRule> instanceList = new ArrayList<>();
             List<ConfRules> confRulesList = ConfRuleFacade.load(features, modes, fromVersion, toVersion);
             Map<String, Class> ruleMap = RuleSelector.select(classList);
