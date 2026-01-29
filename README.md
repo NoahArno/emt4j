@@ -50,6 +50,7 @@ If you want to use these two features, you need to manually install EMT4J to you
 - 补充 REMOVED_NASHORN 规则，让其能通过静态分析扫描出一些 java.nashorn API
 - 将 INCOMPATIBLE_JAR 的优先级调整为 p2
 - 支持 仅JDK升级 和 JDK+Spring 升级两种方式，其中仅 JDK 升级中，设置的规则要宽松一些
+- 修复 incompatible_jar 中，将 com.alibaba.spring:spring-context-support:xxx 被误判为不兼容的 jar 的 bug
 
 #### Find compatibility problems existing in a Maven project
 

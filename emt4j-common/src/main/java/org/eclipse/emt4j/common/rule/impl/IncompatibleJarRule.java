@@ -59,9 +59,15 @@ public class IncompatibleJarRule extends ExecutableRule {
                 return CheckResult.PASS;
             }
 
+            // Extract Maven coordinates (groupId:artifactId:version) if available
+            String groupId = extractGroupId(dependency);
+            String artifactId = extractArtifactId(dependency);
+
             Map<String, Object> mvelMap = new HashMap<>();
             mvelMap.put("$version", new Version(jarFileInfo.get().getVersion()));
             mvelMap.put("$jar", new JarFileName(jarFileInfo.get().getJarFileName()));
+            mvelMap.put("$groupId", groupId != null ? groupId : "");
+            mvelMap.put("$artifactId", artifactId != null ? artifactId : "");
             Object result = MVEL.eval(jarRule.getRule(), mvelMap);
             if (result instanceof Boolean) {
                 if ((Boolean) result) {
@@ -108,6 +114,44 @@ public class IncompatibleJarRule extends ExecutableRule {
 
     private String key(String[] sortArtifactFragments) {
         return String.join("-", sortArtifactFragments);
+    }
+
+    /**
+     * Extract groupId from dependency's source information
+     */
+    private String extractGroupId(Dependency dependency) {
+        try {
+            if (dependency.getSourceInformation() != null &&
+                    dependency.getSourceInformation().getExtras() != null &&
+                    dependency.getSourceInformation().getExtras().length > 0) {
+                String[] GAV = dependency.getSourceInformation().getExtras()[0].split(":");
+                if (GAV.length >= 2) {
+                    return GAV[0]; // groupId
+                }
+            }
+        } catch (Exception e) {
+            // Ignore extraction errors
+        }
+        return null;
+    }
+
+    /**
+     * Extract artifactId from dependency's source information
+     */
+    private String extractArtifactId(Dependency dependency) {
+        try {
+            if (dependency.getSourceInformation() != null &&
+                    dependency.getSourceInformation().getExtras() != null &&
+                    dependency.getSourceInformation().getExtras().length > 0) {
+                String[] GAV = dependency.getSourceInformation().getExtras()[0].split(":");
+                if (GAV.length >= 2) {
+                    return GAV[1]; // artifactId
+                }
+            }
+        } catch (Exception e) {
+            // Ignore extraction errors
+        }
+        return null;
     }
 }
 
