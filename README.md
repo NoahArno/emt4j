@@ -41,6 +41,14 @@ If you want to use these two features, you need to manually install EMT4J to you
 
 - 新增依赖白名单功能，位于白名单的依赖跳过检测
 - 新增 javax 依赖引用规则扫描
+- 新增对 SpringBoot3 中 spring.factories 的扫描支撑
+- 调整 JPMS require add-exports 规则的优先级至 p3
+- 针对 fjp_context.cfg，将优先级别调整为 p3，并且在最终生成的报告中讲述详细的问题原因和解决方案;
+- 新增一套检查规则，检查 CompletableFuture 和 ForkJoinPool 的 API，是否使用了显示的线程池，优先级别调整为p1
+- 新增 enable-rules/disable-rules 参数，用于支持规则过滤能力
+- 修复 java.corba 模块被移除后，模块内相关依赖无法被扫描出来的问题
+- 补充 REMOVED_NASHORN 规则，让其能通过静态分析扫描出一些 java.nashorn API
+- 将 INCOMPATIBLE_JAR 的优先级调整为 p2
 
 #### Find compatibility problems existing in a Maven project
 
