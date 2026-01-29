@@ -130,7 +130,7 @@
     </rule>
 
     <rule desc="Incompatible Jar" type="incompatible-jar" jar-rule-file="incompatible_jar.cfg"
-          result-code="INCOMPATIBLE_JAR" sub-result-code="@{artifact}" priority="p3">
+          result-code="INCOMPATIBLE_JAR" sub-result-code="@{artifact}" priority="p2">
         <support-modes>
             <mode>agent</mode>
             <mode>class</mode>
