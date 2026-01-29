@@ -25,6 +25,7 @@
           priority="p1">
         <support-modes>
             <mode>agent</mode>
+            <mode>class</mode>
         </support-modes>
     </rule>
 
